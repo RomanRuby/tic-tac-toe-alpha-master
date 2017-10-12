@@ -1,0 +1,25 @@
+<html>
+
+    <head>
+        <title>Tic-Tac-Toe Alpha Beta Pruning</title>
+        <script src="js/main.js"></script>
+    </head>
+
+    <body  onload="NewGame()">
+    <h1 style="text-align:center; width:360px;">Tic-Tac-Toe</h1>
+    <div id="board"></div>
+
+        <p id="turnInfo" style="text-align:center; width:280px; position:absolute; left:400px; top:450px; z-index:1" > TURN INFO </p>
+        <form>
+            <input type="button" value="New Game" onclick="NewGame()" style="position:absolute; left:400px; top:400px; z-index:1"/>
+        </form>
+
+        <div style="position:absolute; left:400px; top:50px; z-index:1">
+            <input id="board_size" type="number" value="4"><br>
+            <input id="winner_combination" type="number" value="4"><br>
+            <input type="button" onClick="SetStartParamets(document.getElementById('board_size').value,document.getElementById('winner_combination').value)">
+           <div><strong>Search time for move:</strong> <br />
+            <div id="searchTime"></div></div>
+        </div>
+    </body>
+</html>

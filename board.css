@@ -1,0 +1,17 @@
+.board {
+    cursor: pointer;
+    margin: 30px auto;
+    width: 410px;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+.board div {
+    width: 100px;
+    height: 100px;
+    border: 1px solid lightgrey;
+    display: block;
+
+}
