@@ -61,39 +61,6 @@ function MakeMove(pos) {
     }
   }
 }
-
-function MakeComputerMove() {
-  let start, end, time;
-  start = new Date().getTime() / 1000;
- let number= alphaBetaMinimax(board, 0, -Infinity, +Infinity);
- console.log(number);
-  end  = new Date().getTime() / 1000;
-  time = end - start;
-  ShowTimes(time);
-  let move                  = choice;
-  board[move]               = COMPUTER_PLAYER;
-  document.images[move].src = computerImage.src;
-  choice                    = [];
-  active_turn               = "HUMAN";
-  if (!GameOver(board)) {
-    let alert       = document.getElementById("turnInfo");
-    alert.innerHTML = "Your turn!";
-  }
-}
-
-/**
- * @return {number}
- */
-function GameScore(game, depth) {
-  let score = CheckForWinner(game);
-  if (score === 1)
-    return 0;
-  else if (score === 2)
-    return depth - 10;
-  else if (score === 3)
-    return 10 - depth;
-}
-
 function alphaBetaMinimax(node, depth, alpha, beta) {
 
   if (CheckForWinner(node) === 1 || CheckForWinner(node) === 2
@@ -114,7 +81,6 @@ function alphaBetaMinimax(node, depth, alpha, beta) {
         if (depth === 1)
           choice = move;
       } else if (alpha >= beta) {
-      } else if (alpha >= beta) {
         return alpha;
       }
     }
@@ -133,8 +99,45 @@ function alphaBetaMinimax(node, depth, alpha, beta) {
         return beta;
       }
     }
+
     return beta;
   }
+}
+function MakeComputerMove() {
+  let start, end, time;
+  start = new Date().getTime() / 1000;
+  if (window.Worker) {
+    let worker = new Worker("js/worker.js");
+    worker.postMessage([board, 0, -Infinity, +Infinity]);
+    worker.onmessage = function (e) {
+      end  = new Date().getTime() / 1000;
+      time = end - start;
+      ShowTimes(time);
+      let move                  = choice;
+      board[move]               = COMPUTER_PLAYER;
+      document.images[move].src = computerImage.src;
+      choice                    = [];
+      active_turn               = "HUMAN";
+      if (!GameOver(board)) {
+        let alert       = document.getElementById("turnInfo");
+        alert.innerHTML = "Your turn!";
+      }
+    };
+    // alphaBetaMinimax(board, 0, -Infinity, +Infinity);
+  }
+}
+
+/**
+ * @return {number}
+ */
+function GameScore(game, depth) {
+  let score = CheckForWinner(game);
+  if (score === 1)
+    return 0;
+  else if (score === 2)
+    return depth - 10;
+  else if (score === 3)
+    return 10 - depth;
 }
 
 function UndoMove(game, move) {
@@ -307,7 +310,7 @@ function GameOver(game) {
   }
   else if (CheckForWinner(game) === 2) {
     let alert       = document.getElementById("turnInfo");
-    alert.innerHTML = "You have won! ";
+    alert.innerHTML = "You have won! Congratulations!";
   }
   else {
     let alert       = document.getElementById("turnInfo");
@@ -340,3 +343,5 @@ function ShowAverageTime() {
     showAverageTime                                 = false;
   }
 }
+
+export { alphaBetaMinimax };
