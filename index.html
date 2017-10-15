@@ -14,8 +14,8 @@
         </form>
 
         <div style="position:absolute; left:400px; top:50px; z-index:1">
-            <input id="board_size" type="number" value="4"><br>
-            <input id="winner_combination" type="number" value="4"><br>
+            <label for="board_size"></label><input id="board_size" type="number" value="4"><br>
+            <label for="winner_combination"></label><input id="winner_combination" type="number" value="4"><br>
             <input type="button" onClick="SetStartConfiguration(document.getElementById('board_size').value,document.getElementById('winner_combination').value)">
            <div><strong>Search time for move:</strong> <br />
             <div id="searchTime"></div></div>

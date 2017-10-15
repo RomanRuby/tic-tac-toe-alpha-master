@@ -80,7 +80,7 @@ function alphaBetaMinimax(node, depth, alpha, beta) {
         alpha = result;
         if (depth === 1)
           choice = move;
-      } else if (alpha >= beta) {
+      } else if (alpha >= beta  || depth<BOARD_SIZE) {
         return alpha;
       }
     }
@@ -95,7 +95,7 @@ function alphaBetaMinimax(node, depth, alpha, beta) {
         beta = result;
         if (depth === 1)
           choice = move;
-      } else if (beta <= alpha) {
+      } else if (beta <= alpha || BOARD_SIZE<16) {
         return beta;
       }
     }
