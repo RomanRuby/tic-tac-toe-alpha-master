@@ -7,16 +7,16 @@
 </head>
 <body onload="newGame()">
 <h1 style="text-align:center; width:360px;">Tic-Tac-Toe</h1>
-<div class="property">
+<div class="property" style="float :left">
   <div>
-    <p id="turnInfo" style="text-align:center; width:280px; position:absolute; left:400px; top:450px; z-index:1"> TURN
+    <p id="turnInfo" style="text-align:center; width:280px; z-index:1"> TURN
       INFO </p>
     <form>
       <input type="button" value="New Game" onclick="newGame()"
-             style="position:absolute; left:400px; top:400px; z-index:1"/>
+             style=" z-index:1"/>
     </form>
   </div>
-  <div style="position:absolute; left:400px; top:50px; z-index:1">
+  <div style=" z-index:1">
     <label for="board_size"></label><input id="board_size" type="number" value="4"><br>
     <label for="winner_combination"></label><input id="winner_combination" type="number" value="4"><br>
     <input type="button" onClick="setStartConfiguration()">
@@ -25,6 +25,7 @@
     </div>
   </div>
 </div>
-<div id="board"></div>
+<div id="board" style="float :right">
+  </div>
 </body>
 </html>
