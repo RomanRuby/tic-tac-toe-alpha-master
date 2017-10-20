@@ -27,19 +27,19 @@ self.addEventListener('message', function (event) {
 
   function changeTurn() {
     let piece;
-    if (this.inits.active_turn === "COMPUTER") {
-      piece             = 'X';
-      this.inits.active_turn = "HUMAN";
+    if (this.inits.active_turn === 'COMPUTER') {
+      piece                  = 'X';
+      this.inits.active_turn = 'HUMAN';
     } else {
-      piece             = 'O';
-      this.inits.active_turn = "COMPUTER";
+      piece                  = 'O';
+      this.inits.active_turn = 'COMPUTER';
     }
     return piece;
   }
 
   function getAvailableMoves(game) {
     const possibleMoves = [];
-    for (let i = 0; i < this.inits.BOARD_SIZE; i++) {
+    for (let i = 0; i < this.inits.BOARD_SIZE; i + 1) {
       if (game[i] === this.inits.UNOCCUPIED)
         possibleMoves.push(i);
     }
@@ -47,15 +47,16 @@ self.addEventListener('message', function (event) {
   }
 
   function alphaBetaMinimax(node, depth, alpha, beta) {
-    if (checkForWinner(node) === 1 || checkForWinner(node) === 2
-      || checkForWinner(node) === 3) {
+    if (checkForWinner(node) === 1 ||
+      checkForWinner(node) === 2 ||
+      checkForWinner(node) === 3) {
       return gameScore(node, depth);
     }
 
     depth += 1;
     let availableMoves = getAvailableMoves(node);
     let move, result, possible_game;
-    if (this.inits.active_turn === "COMPUTER") {
+    if (this.inits.active_turn === 'COMPUTER') {
       for (let i = 0; i < availableMoves.length; i++) {
         move          = availableMoves[i];
         possible_game = getNewState(move, node);
@@ -66,7 +67,7 @@ self.addEventListener('message', function (event) {
           if (depth === 1) {
             this.inits.choice = move;
           }
-        } else if (alpha >= beta || depth > 2) {
+        } else if (alpha >= beta || depth > 8) {
           return alpha;
         }
       }
@@ -83,7 +84,7 @@ self.addEventListener('message', function (event) {
           if (depth === 1) {
             this.inits.choice = move;
           }
-        } else if (beta <= alpha || depth > 2) {
+        } else if (beta <= alpha || depth > 8) {
           return beta;
         }
       }
@@ -103,7 +104,7 @@ self.addEventListener('message', function (event) {
     /**
      * Check for horizontal wins
      */
-    for (let i = 0; i < this.inits.BOARD_SIDE * this.inits.BOARD_SIDE; i = i + this.inits.BOARD_SIDE) {
+    for (let i = 0; i < this.inits.BOARD_SIZE; i = i + this.inits.BOARD_SIDE) {
       let human = 0, computer = 0;
       for (let j = i; j < i + this.inits.BOARD_SIDE; j++) {
         if (game[j] === this.inits.HUMAN_PLAYER) {
@@ -135,14 +136,12 @@ self.addEventListener('message', function (event) {
       for (let j = i; j < this.inits.BOARD_SIDE * this.inits.BOARD_SIDE; j = j + this.inits.BOARD_SIDE) {
         if (game[j] === this.inits.HUMAN_PLAYER) {
           human++;
-        }
-        else {
+        } else {
           human = 0;
         }
         if (game[j] === this.inits.COMPUTER_PLAYER) {
           computer++;
-        }
-        else {
+        } else {
           computer = 0;
         }
         if (computer === this.inits.WIN_COMBINATION) {
@@ -159,7 +158,8 @@ self.addEventListener('message', function (event) {
      */
     for (let i = this.inits.BOARD_SIDE - 1; i >= 0; i--) {
       let human = 0, computer = 0;
-      for (let j = i, counter = i; j < this.inits.BOARD_SIDE * this.inits.BOARD_SIDE; j = j + this.inits.BOARD_SIDE, counter--) {
+      for (let j       = i,
+               counter = i; j < this.inits.BOARD_SIDE * this.inits.BOARD_SIDE; j = j + this.inits.BOARD_SIDE, counter--) {
         for (let k = j; counter >= 0; k = k + inits.BOARD_SIDE - 1, counter--) {
           if (game[k] === this.inits.HUMAN_PLAYER) {
             human++;
@@ -188,7 +188,8 @@ self.addEventListener('message', function (event) {
      */
     for (let i = 0; i < this.inits.BOARD_SIDE; i++) {
       let human = 0, computer = 0;
-      for (let j = i, counter = i; j < this.inits.BOARD_SIDE * this.inits.BOARD_SIDE; j = j + this.inits.BOARD_SIDE, counter++) {
+      for (let j       = i,
+               counter = i; j < this.inits.BOARD_SIDE * this.inits.BOARD_SIDE; j = j + this.inits.BOARD_SIDE, counter++) {
         for (let k = j; counter <= this.inits.BOARD_SIDE; k = k + this.inits.BOARD_SIDE + 1, counter++) {
           if (game[k] === this.inits.HUMAN_PLAYER) {
             human++;
@@ -215,10 +216,11 @@ self.addEventListener('message', function (event) {
     /**
      * Check for tie
      */
-    for (let i = 0; i < this.inits.BOARD_SIZE; i++) {
-      if (game[i] !== this.inits.HUMAN_PLAYER && game[i] !== this.inits.COMPUTER_PLAYER)
+    this.inits.BOARD_SIZE.forEach((field) => {
+      if (game[field] !== this.inits.HUMAN_PLAYER && game[field] !== this.inits.COMPUTER_PLAYER) {
         return 0;
-    }
+      }
+    });
     return 1;
   }
 
