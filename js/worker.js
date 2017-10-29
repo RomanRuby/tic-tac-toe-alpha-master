@@ -27,12 +27,12 @@ self.addEventListener('message', function (event) {
 
   function changeTurn() {
     let piece;
-    if (this.inits.active_turn === "COMPUTER") {
-      piece             = 'X';
-      this.inits.active_turn = "HUMAN";
+    if (this.inits.active_turn === 'COMPUTER') {
+      piece                  = 'X';
+      this.inits.active_turn = 'HUMAN';
     } else {
-      piece             = 'O';
-      this.inits.active_turn = "COMPUTER";
+      piece                  = 'O';
+      this.inits.active_turn = 'COMPUTER';
     }
     return piece;
   }
@@ -47,15 +47,16 @@ self.addEventListener('message', function (event) {
   }
 
   function alphaBetaMinimax(node, depth, alpha, beta) {
-    if (checkForWinner(node) === 1 || checkForWinner(node) === 2
-      || checkForWinner(node) === 3) {
+    if (checkForWinner(node) === 1 ||
+      checkForWinner(node) === 2 ||
+      checkForWinner(node) === 3) {
       return gameScore(node, depth);
     }
 
     depth += 1;
     let availableMoves = getAvailableMoves(node);
     let move, result, possible_game;
-    if (this.inits.active_turn === "COMPUTER") {
+    if (this.inits.active_turn === 'COMPUTER') {
       for (let i = 0; i < availableMoves.length; i++) {
         move          = availableMoves[i];
         possible_game = getNewState(move, node);
@@ -66,7 +67,7 @@ self.addEventListener('message', function (event) {
           if (depth === 1) {
             this.inits.choice = move;
           }
-        } else if (alpha >= beta || depth > 2) {
+        } else if (alpha >= beta || depth > 8) {
           return alpha;
         }
       }
@@ -83,7 +84,7 @@ self.addEventListener('message', function (event) {
           if (depth === 1) {
             this.inits.choice = move;
           }
-        } else if (beta <= alpha || depth > 2) {
+        } else if (beta <= alpha || depth > 8) {
           return beta;
         }
       }

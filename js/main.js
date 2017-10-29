@@ -8,32 +8,31 @@ const init = {
   COMPUTER_PLAYER_VIEW: '<img src="images/x.png" >',
   HUMAN_PLAYER:         'O',
   COMPUTER_PLAYER:      'X',
-  active_turn:          "COMPUTER",
+  active_turn:          'COMPUTER',
   choice:               '',
   searchTimes:          [],
   showAverageTime:      true,
-  worker:               new Worker('js/worker.js')
+  worker:               new Worker('js/worker.js'),
 };
 
-newGame = () => {
+function newGame() {
   loadBorder();
 
   for (let i = 0; i < init.BOARD_SIZE; i++) {
     init.board[i] = init.UNOCCUPIED;
   }
   init.showAverageTime = true;
-  init.active_turn     = "HUMAN";
+  init.active_turn     = 'HUMAN';
 
-  document.getElementById("turnInfo").innerHTML = "Your turn!";
+  document.getElementById('turnInfo').innerHTML = 'Your turn!';
 };
 
 function setStartConfiguration() {
 
   init.board           = [];
   init.BOARD_SIDE      = +document.getElementById('board_size').value;
-  console.log(init.BOARD_SIDE);
   init.WIN_COMBINATION = +document.getElementById('winner_combination').value;
-  init.BOARD_SIZE      = Math.pow(document.getElementById('board_size').value, 2);
+  init.BOARD_SIZE      = Math.pow(document.getElementById('board_size').value,2);
   newGame();
 }
 
@@ -43,7 +42,7 @@ function loadBorder() {
 
   for (let i = 0; i < init.BOARD_SIDE; i++) {
     for (let j = 0; j < init.BOARD_SIDE; j++) {
-      board += '\r\n' + `<div class="block" onClick="makeMove(${counter++})"  ></div>`;
+      board += '\r\n' + `<div class='block' onClick='makeMove(${counter++})'  ></div>`;
     }
   }
   document.getElementById('board').style.width = init.BOARD_SIDE * 34;
@@ -51,12 +50,12 @@ function loadBorder() {
 }
 
 function makeMove(pos) {
-  if (!gameOver(init.board) && init.board[pos] === init.UNOCCUPIED && init.active_turn === "HUMAN") {
+  if (!gameOver(init.board) && init.board[pos] === init.UNOCCUPIED && init.active_turn === 'HUMAN') {
     init.board[pos]                                         = init.HUMAN_PLAYER;
     document.getElementsByClassName('block')[pos].innerHTML = init.HUMAN_PLAYER_VIEW;
     if (!gameOver(init.board)) {
-      init.active_turn                              = "COMPUTER";
-      document.getElementById("turnInfo").innerHTML = "Computer's turn.";
+      init.active_turn                              = 'COMPUTER';
+      document.getElementById('turnInfo').innerHTML = 'Computer\'s turn.';
       makeComputerMove();
     }
   }
@@ -80,15 +79,16 @@ function makeComputerMove() {
     window.setTimeout(makeComputerMoveAfterDelay);
   });
 }
+
 function makeComputerMoveAfterDelay() {
   const move                                               = init.choice;
   init.board[move]                                         = init.COMPUTER_PLAYER;
   document.getElementsByClassName('block')[move].innerHTML = init.COMPUTER_PLAYER_VIEW;
   init.choice                                              = [];
-  init.active_turn                                         = "HUMAN";
+  init.active_turn                                         = 'HUMAN';
   if (!gameOver(init.board)) {
-    const alert     = document.getElementById("turnInfo");
-    alert.innerHTML = "Your turn!";
+    const alert     = document.getElementById('turnInfo');
+    alert.innerHTML = 'Your turn!';
   }
 }
 
@@ -200,24 +200,24 @@ function checkForWinner(game) {
   }
 
   return 1;
-
 }
 
 function gameOver(game) {
+
   if (checkForWinner(game) === 0) {
     return false;
   }
   else if (checkForWinner(game) === 1) {
-    let alert       = document.getElementById("turnInfo");
-    alert.innerHTML = "It is a tie.";
+    let alert       = document.getElementById('turnInfo');
+    alert.innerHTML = 'It is a tie.';
   }
   else if (checkForWinner(game) === 2) {
-    let alert       = document.getElementById("turnInfo");
-    alert.innerHTML = "You have won! Congratulations!";
+    let alert       = document.getElementById('turnInfo');
+    alert.innerHTML = 'You have won! Congratulations!';
   }
   else {
-    let alert       = document.getElementById("turnInfo");
-    alert.innerHTML = "The computer has won.";
+    let alert       = document.getElementById('turnInfo');
+    alert.innerHTML = 'The computer has won.';
   }
   return true;
 }
